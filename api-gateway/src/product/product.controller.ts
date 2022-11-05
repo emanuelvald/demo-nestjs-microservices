@@ -8,13 +8,13 @@ import { UpdateProductDto } from './dto/update-product.dto';
 
 @Controller('product')
 export class ProductController {
-  private _productProxyUser = this.rmqService.clientProxyProduct();
+  private clientProxyProduct = this.rmqService.clientProxyProduct();
 
   constructor(private readonly rmqService: ProxyService) {}
 
   @Get()
   selectProducts(): Observable<ProductInterface[]> {
-    return this._productProxyUser.send(
+    return this.clientProxyProduct.send(
       ProductPatternsEnum.SELECT_ALL_PRODUCT,
       null,
     );
@@ -22,7 +22,7 @@ export class ProductController {
 
   @Get('/:id')
   selectProduct(@Param('id') id: number): Observable<ProductInterface> {
-    return this._productProxyUser.send(
+    return this.clientProxyProduct.send(
       ProductPatternsEnum.SELECT_ONE_PRODUCT,
       id,
     );
@@ -32,7 +32,7 @@ export class ProductController {
   createProduct(
     @Body() createProductDto: CreateProductDto,
   ): Observable<ProductInterface> {
-    return this._productProxyUser.send(
+    return this.clientProxyProduct.send(
       ProductPatternsEnum.CREATE_ONE_PRODUCT,
       createProductDto,
     );
@@ -42,7 +42,7 @@ export class ProductController {
   updateProduct(
     @Body() updateProductDto: UpdateProductDto,
   ): Observable<ProductInterface> {
-    return this._productProxyUser.send(
+    return this.clientProxyProduct.send(
       ProductPatternsEnum.UPDATE_ONE_PRODUCT,
       updateProductDto,
     );
